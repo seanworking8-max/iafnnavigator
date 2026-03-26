@@ -21,7 +21,7 @@
   --r:20px;--r-sm:14px;--ease:cubic-bezier(0.16,1,0.3,1);--ease-out:cubic-bezier(0.33,1,0.68,1);
 }
 html{scroll-behavior:smooth}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.75;overflow-x:clip;-webkit-font-smoothing:antialiased;-webkit-overflow-scrolling:touch}
 
 /* === ANIMATED BG - LIGHT VERSION === */
 .bg-grad{position:fixed;inset:0;z-index:-1;
@@ -76,7 +76,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .btn-pdf svg{width:14px;height:14px}
 
 /* === TAB BAR === */
-.tab-bar{position:fixed;top:52px;left:0;right:0;z-index:999;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-bar{position:fixed;top:52px;left:0;right:0;z-index:999;background:rgba(255,255,255,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-width:none}
 .tab-bar::-webkit-scrollbar{height:0}
 .tab-bar-inner{display:flex;max-width:1440px;margin:0 auto;padding:0 0.5rem}
 .tab-btn{padding:0.8rem 1.1rem;font-size:0.68rem;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:inherit;transition:all 0.4s var(--ease);position:relative;white-space:nowrap;flex-shrink:0}
@@ -86,7 +86,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .tab-btn.active::after{width:65%}
 
 /* === TAB TRANSITION === */
-.tab-panel{display:none;padding:130px 2rem 4rem;min-height:100vh}
+.tab-panel{display:none;padding:130px 2rem 4rem;min-height:calc(100vh - 130px)}
 .tab-panel.active{display:block;animation:panelIn 0.6s var(--ease-out)}
 @keyframes panelIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .panel-inner{max-width:1100px;margin:0 auto}
@@ -194,7 +194,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .cx p{font-size:0.85rem;color:var(--text-2);line-height:1.75}
 
 /* === PASSWORD OVERLAY === */
-.pw-ov{position:fixed;inset:0;z-index:10000;background:rgba(255,255,255,0.97);backdrop-filter:blur(30px);display:flex;align-items:center;justify-content:center;transition:opacity 0.5s ease}
+.pw-ov{position:fixed;inset:0;z-index:10000;background:rgba(255,255,255,0.97);backdrop-filter:blur(30px);display:flex;align-items:center;justify-content:center;transition:opacity 0.5s ease;overscroll-behavior:contain}
 .pw-ov.hidden{opacity:0;pointer-events:none}
 .pw-m{text-align:center;padding:2.5rem;max-width:400px;width:90%;background:var(--bg);border:1px solid var(--border-2);box-shadow:var(--shadow-lg)}
 .pw-m .pw-logo{height:56px;margin:0 auto 1.5rem;display:block}
@@ -228,13 +228,44 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 /* === RESPONSIVE === */
 @media(max-width:900px){.two-col,.pr-grid,.cx-grid{grid-template-columns:1fr}}
 @media(max-width:768px){
-  .tab-panel{padding:120px 1.2rem 3rem}
-  .hero-banner{height:200px}
-  .hero-banner h2{font-size:1.7rem}
-  .hero-banner .ov{padding:1.5rem}
+  .tab-panel{padding:110px 1rem 3rem}
+  .hero-banner{height:180px}
+  .hero-banner h2{font-size:1.5rem}
+  .hero-banner .ov{padding:1.2rem}
   .cal-grid{grid-template-columns:1fr}
-  .top-bar-inner{padding:0.6rem 1rem}
+  .top-bar-inner{padding:0.5rem 0.8rem}
+  .brand-text{font-size:0.85rem}
+  .btn-pdf{padding:0.4rem 0.8rem;font-size:0.7rem}
+  .tab-bar{top:48px;-webkit-overflow-scrolling:touch;touch-action:pan-x}
+  .tab-btn{padding:0.6rem 0.7rem;font-size:0.58rem;letter-spacing:1.2px}
   .cursor-glow{display:none}
+  .img-break{height:160px}
+  .s-title{font-size:1.5rem!important}
+  body{-webkit-overflow-scrolling:touch}
+}
+@media(max-width:480px){
+  .tab-panel{padding:100px 0.8rem 2rem}
+  .hero-banner{height:150px}
+  .hero-banner h2{font-size:1.3rem}
+  .tab-bar{top:44px}
+  .tab-btn{padding:0.5rem 0.55rem;font-size:0.52rem;letter-spacing:0.8px}
+  .top-bar-inner{padding:0.4rem 0.6rem}
+  .brand-logo{height:28px}
+  .brand-text{font-size:0.78rem}
+  .btn-pdf{padding:0.35rem 0.6rem;font-size:0.65rem;gap:4px}
+  .btn-pdf svg{width:12px;height:12px}
+  .img-break{height:130px}
+  .s-title{font-size:1.3rem!important}
+  .s-desc{font-size:0.85rem}
+  .two-col{gap:1.5rem}
+}
+
+/* === MOBILE TOUCH & SCROLL FIX === */
+@media(max-width:768px){
+html,body{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;height:auto!important}
+.bg-grad,.particles{pointer-events:none}
+.cursor-glow{display:none!important}
+.tab-panel{min-height:auto}
 }
 
 /* === MAGNETIC BUTTON EFFECT === */
@@ -248,8 +279,10 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 .img-break .img-break-ov{flex-direction:column;justify-content:center;align-items:flex-start}
 
 /* === BIGGER / BOLDER HERO === */
+@media(min-width:769px){
 .hero-banner{height:340px}
 .hero-banner h2{font-size:2.8rem;text-shadow:0 2px 20px rgba(0,0,0,0.3)}
+}
 
 /* === ANIMATED UNDERLINE ON SECTION TITLES === */
 .s-title{position:relative;display:inline-block}
@@ -1224,7 +1257,8 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 
 <script>
 /* === PASSWORD === */
-function ck(){const i=document.getElementById('pwI'),o=document.getElementById('pwO'),e=document.getElementById('pwE');if(i.value==='IAFN2026'){o.classList.add('hidden');setTimeout(()=>o.style.display='none',500)}else{e.style.display='block';i.style.borderColor='#e53e3e';setTimeout(()=>{e.style.display='none';i.style.borderColor=''},2000)}}
+function ck(){const i=document.getElementById('pwI'),o=document.getElementById('pwO'),e=document.getElementById('pwE');if(i.value==='IAFN2026'){o.classList.add('hidden');setTimeout(()=>o.style.display='none',500);try{localStorage.setItem('iafn_auth','1')}catch(x){}}else{e.style.display='block';i.style.borderColor='#e53e3e';setTimeout(()=>{e.style.display='none';i.style.borderColor=''},2000)}}
+try{if(localStorage.getItem('iafn_auth')==='1'){const o=document.getElementById('pwO');if(o){o.classList.add('hidden');o.style.display='none'}}}catch(x){}
 
 /* === TAB SWITCHING WITH SMOOTH TRANSITIONS === */
 document.querySelectorAll('.tab-btn').forEach(b=>{b.addEventListener('click',()=>{
@@ -1233,7 +1267,7 @@ document.querySelectorAll('.tab-btn').forEach(b=>{b.addEventListener('click',()=
   b.classList.add('active');
   const panel=document.getElementById('tab-'+b.dataset.tab);
   panel.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'instant'});
   // Re-trigger reveal animations for the new panel
   requestAnimationFrame(()=>{
     panel.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>{
